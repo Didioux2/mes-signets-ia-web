@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes Signets IA</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+    }
+
+    .card {
+      width: 90%;
+      max-width: 500px;
+      padding: 40px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.08);
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 14px 22px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #222;
+      color: white;
+    }
+
+    #status {
+      margin-top: 20px;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h1>🔖 Mes Signets IA</h1>
+    <p>Votre bibliothèque personnelle de signets et résumés IA.</p>
+
+    <button id="loginBtn">🔐 Se connecter avec Google</button>
+
+    <div id="status">Non connecté</div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://imehbthvldsqmxobivka.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_voZTwjikja0soirZ1a2bsw_AZNRVsGh";
+
+    const { createClient } = supabase;
+
+    const client = createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    const loginBtn = document.getElementById("loginBtn");
+    const status = document.getElementById("status");
+
+    loginBtn.addEventListener("click", async () => {
+      status.textContent = "Connexion en cours...";
+
+      const { error } = await client.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "https://didioux2.github.io/mes-signets-ia-web/"
+        }
+      });
+
+      if (error) {
+        console.error(error);
+        status.textContent = "Erreur : " + error.message;
+      }
+    });
+
+    async function checkSession() {
+      const { data, error } = await client.auth.getSession();
+
+      if (error) {
+        status.textContent = "Erreur : " + error.message;
+        return;
+      }
+
+      if (data.session) {
+        status.textContent =
+          "Connecté : " + (data.session.user.email || "utilisateur");
+        loginBtn.style.display = "none";
+      }
+    }
+
+    checkSession();
+  </script>
+
+</body>
+</html>
