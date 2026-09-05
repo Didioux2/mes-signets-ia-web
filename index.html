@@ -27,6 +27,8 @@
 
     h1 {
       margin: 0;
+      font-size: 28px;
+      white-space: nowrap;
     }
 
     .subtitle {
@@ -93,7 +95,8 @@
     .signet h2 {
       margin-top: 0;
       margin-bottom: 8px;
-      font-size: 20px;
+      font-size: 18px;
+      text-align: justify;
     }
 
     .signet h2 a {
@@ -112,8 +115,15 @@
     }
 
     .resume {
+      font-size: 15px;
       line-height: 1.6;
+      text-align: justify;
       white-space: pre-wrap;
+    }
+
+    .resume-section-title {
+      color: #218739;
+      font-weight: bold;
     }
 
     #status {
@@ -121,19 +131,64 @@
       padding: 30px;
       color: #666;
     }
+
+    @media (max-width: 600px) {
+
+      body {
+        padding: 12px;
+      }
+
+      header {
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        font-size: 22px;
+        white-space: nowrap;
+      }
+
+      #logoutBtn {
+        padding: 8px 11px;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .subtitle {
+        font-size: 13px;
+      }
+
+      .signet {
+        padding: 15px;
+        margin-bottom: 12px;
+      }
+
+      .signet h2 {
+        font-size: 17px;
+        line-height: 1.4;
+      }
+
+      .date {
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+
+      .resume {
+        font-size: 14px;
+        line-height: 1.55;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- Zone de connexion -->
   <section id="loginSection" class="hidden">
     <h2>🔐 Bienvenue dans Mes Signets IA</h2>
     <p>Connectez-vous pour accéder à votre bibliothèque personnelle.</p>
     <button id="loginBtn">🔵 Se connecter avec Google</button>
   </section>
 
-  <!-- Application -->
   <div id="app" class="hidden">
 
     <header>
@@ -178,6 +233,25 @@
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+    }
+
+    function formatResume(text) {
+      let html = escapeHtml(text);
+
+      /*
+       * Transforme les titres de sections du type :
+       * ##**_ TITRE _**##
+       * ou
+       * ##**_TITRE_**##
+       *
+       * en titres verts sans les marqueurs.
+       */
+      html = html.replace(
+        /##\*\*_?\s*(.*?)\s*_?\*\*##/g,
+        '<span class="resume-section-title">$1</span>'
+      );
+
+      return html;
     }
 
     async function afficherApplication(session) {
@@ -247,7 +321,7 @@
           </div>
 
           <div class="resume">
-            ${escapeHtml(signet.resume_ia)}
+            ${formatResume(signet.resume_ia)}
           </div>
         `;
 
