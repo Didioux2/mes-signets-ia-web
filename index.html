@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -81,7 +82,25 @@
     #userInfo {
       color: #666;
       font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    #searchInput {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px 16px;
       margin-bottom: 20px;
+      border: 1px solid #d5d9df;
+      border-radius: 10px;
+      background: white;
+      color: #222;
+      font-size: 15px;
+      outline: none;
+    }
+
+    #searchInput:focus {
+      border-color: #1a73e8;
+      box-shadow: 0 0 0 2px rgba(26,115,232,0.08);
     }
 
     .signet {
@@ -158,6 +177,12 @@
         font-size: 13px;
       }
 
+      #searchInput {
+        padding: 12px 14px;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
       .signet {
         padding: 15px;
         margin-bottom: 12px;
@@ -179,6 +204,7 @@
       }
     }
   </style>
+
 </head>
 
 <body>
@@ -191,20 +217,29 @@
 
   <div id="app" class="hidden">
 
-    <header>
-      <div>
-        <h1>🔖 Mes Signets IA</h1>
-        <div class="subtitle">Votre bibliothèque personnelle</div>
-      </div>
+```
+<header>
+  <div>
+    <h1>🔖 Mes Signets IA</h1>
+    <div class="subtitle">Votre bibliothèque personnelle</div>
+  </div>
 
-      <button id="logoutBtn">Déconnexion</button>
-    </header>
+  <button id="logoutBtn">Déconnexion</button>
+</header>
 
-    <div id="userInfo"></div>
+<div id="userInfo"></div>
 
-    <div id="status">Chargement des signets...</div>
+<input
+  type="search"
+  id="searchInput"
+  placeholder="🔎 Rechercher dans mes signets..."
+  autocomplete="off"
+>
 
-    <div id="signets"></div>
+<div id="status">Chargement des signets...</div>
+
+<div id="signets"></div>
+```
 
   </div>
 
@@ -223,8 +258,11 @@
     const loginBtn = document.getElementById("loginBtn");
     const logoutBtn = document.getElementById("logoutBtn");
     const userInfo = document.getElementById("userInfo");
+    const searchInput = document.getElementById("searchInput");
     const status = document.getElementById("status");
     const signetsContainer = document.getElementById("signets");
+
+    let tousLesSignets = [];
 
     function escapeHtml(value) {
       return String(value ?? "")
@@ -291,14 +329,31 @@
       }
 
       if (!data || data.length === 0) {
+        tousLesSignets = [];
         status.textContent = "Aucun signet enregistré.";
         return;
       }
 
-      status.textContent =
-        data.length + " signet" + (data.length > 1 ? "s" : "");
+      tousLesSignets = data;
 
-      data.forEach(signet => {
+      afficherSignets(tousLesSignets);
+    }
+
+    function afficherSignets(signets) {
+
+      signetsContainer.innerHTML = "";
+
+      if (!signets || signets.length === 0) {
+        status.textContent = "Aucun signet ne correspond à votre recherche.";
+        return;
+      }
+
+      status.textContent =
+        signets.length +
+        " signet" +
+        (signets.length > 1 ? "s" : "");
+
+      signets.forEach(signet => {
 
         const article = document.createElement("article");
         article.className = "signet";
@@ -328,6 +383,43 @@
         signetsContainer.appendChild(article);
       });
     }
+
+    function rechercherSignets() {
+
+      const recherche =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+      if (!recherche) {
+        afficherSignets(tousLesSignets);
+        return;
+      }
+
+      const resultats =
+        tousLesSignets.filter(signet => {
+
+          const titre =
+            String(signet.title || "")
+              .toLowerCase();
+
+          const resume =
+            String(signet.resume_ia || "")
+              .toLowerCase();
+
+          return (
+            titre.includes(recherche) ||
+            resume.includes(recherche)
+          );
+        });
+
+      afficherSignets(resultats);
+    }
+
+    searchInput.addEventListener(
+      "input",
+      rechercherSignets
+    );
 
     loginBtn.addEventListener("click", async () => {
 
