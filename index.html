@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 
 <head>
@@ -291,6 +292,54 @@
     }
 
     /* --------------------------------------------------
+       LU / NON LU
+    -------------------------------------------------- */
+
+    .signet-actions {
+      display: flex;
+      gap: 8px;
+      margin: 8px 0 0 22px;
+    }
+
+    .read-button {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      background: #fff;
+      color: #222;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .read-button:hover {
+      background: #f5f5f5;
+    }
+
+    .read-button:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .signet.read {
+      background: #f1f5f2;
+      opacity: 0.78;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+
+    .signet.read .title-button {
+      color: #5f6b63;
+    }
+
+    .signet.read .summary {
+      color: #68736c;
+    }
+
+    .signet.read .read-button {
+      background: #dce9df;
+      color: #3f6549;
+    }
+
+    /* --------------------------------------------------
        ABSENCE DE RÉSULTAT
     -------------------------------------------------- */
 
@@ -360,8 +409,14 @@
       .summary-section-title {
         font-size: 18px;
       }
+
+      .read-button {
+        font-size: 11px;
+        padding: 6px 9px;
+      }
     }
   </style>
+
 </head>
 
 <body>
@@ -372,18 +427,19 @@
 
   <section id="loginSection" class="hidden">
 
-    <h2>🔖 Mes Signets IA</h2>
+```
+<h2>🔖 Mes Signets IA</h2>
 
-    <p>
-      Connectez-vous pour accéder à votre bibliothèque personnelle.
-    </p>
+<p>
+  Connectez-vous pour accéder à votre bibliothèque personnelle.
+</p>
 
-    <button id="loginBtn" type="button">
-      🔵 Se connecter avec Google
-    </button>
+<button id="loginBtn" type="button">
+  🔵 Se connecter avec Google
+</button>
+```
 
   </section>
-
 
   <!-- ==================================================
        APPLICATION
@@ -391,58 +447,59 @@
 
   <div id="app" class="hidden">
 
-    <header>
+```
+<header>
 
-      <div>
-        <h1>🔖 Mes Signets IA</h1>
-        <div class="subtitle">
-          Votre bibliothèque personnelle
-        </div>
-      </div>
-
-      <button id="logoutBtn" type="button">
-        Déconnexion
-      </button>
-
-    </header>
-
-    <div id="userInfo"></div>
-
-
-    <!-- RECHERCHE -->
-
-    <div class="search-section">
-
-      <input
-        type="search"
-        id="searchInput"
-        placeholder="🔎 Rechercher dans mes signets..."
-        autocomplete="off"
-      >
-
-      <button id="searchButton" type="button">
-        Rechercher
-      </button>
-
-      <button id="resetSearchButton" type="button">
-        Tous
-      </button>
-
+  <div>
+    <h1>🔖 Mes Signets IA</h1>
+    <div class="subtitle">
+      Votre bibliothèque personnelle
     </div>
-
-
-    <div id="status">
-      Chargement des signets...
-    </div>
-
-    <div id="signets"></div>
-
-    <div id="empty" class="hidden">
-      Aucun signet ne correspond à cette recherche.
-    </div>
-
   </div>
 
+  <button id="logoutBtn" type="button">
+    Déconnexion
+  </button>
+
+</header>
+
+<div id="userInfo"></div>
+
+
+<!-- RECHERCHE -->
+
+<div class="search-section">
+
+  <input
+    type="search"
+    id="searchInput"
+    placeholder="🔎 Rechercher dans mes signets..."
+    autocomplete="off"
+  >
+
+  <button id="searchButton" type="button">
+    Rechercher
+  </button>
+
+  <button id="resetSearchButton" type="button">
+    Tous
+  </button>
+
+</div>
+
+
+<div id="status">
+  Chargement des signets...
+</div>
+
+<div id="signets"></div>
+
+<div id="empty" class="hidden">
+  Aucun signet ne correspond à cette recherche.
+</div>
+```
+
+  </div>
 
   <script>
 
@@ -686,9 +743,32 @@
             row.saved_at || "",
 
           embedding_version:
-            row.embedding_version ?? null
+            row.embedding_version ?? null,
+
+          est_lu:
+            Boolean(row.est_lu)
 
         };
+
+
+        /*
+         * Si match_signets ne renvoie pas est_lu,
+         * on récupère l'état depuis allSignets.
+         */
+
+        const localSignet =
+          allSignets.find(
+            s =>
+              String(s.id) === String(row.id)
+          );
+
+        if (
+          localSignet &&
+          row.est_lu == null
+        ) {
+          signet.est_lu =
+            Boolean(localSignet.est_lu);
+        }
 
 
         const semanticScore =
@@ -780,7 +860,7 @@
         await client.rpc(
           "recherche_classique",
           {
-           search_query: query,
+            search_query: query,
             match_count: 20
           }
         );
@@ -1137,6 +1217,28 @@
       signets.forEach(
         (signet) => {
 
+          /*
+           * Pour les résultats de recherche classique,
+           * est_lu peut ne pas être renvoyé par la RPC.
+           * On récupère alors l'état depuis allSignets.
+           */
+
+          const localSignet =
+            allSignets.find(
+              s =>
+                String(s.id) === String(signet.id)
+            );
+
+
+          if (
+            signet.est_lu == null &&
+            localSignet
+          ) {
+            signet.est_lu =
+              Boolean(localSignet.est_lu);
+          }
+
+
           const article =
             document.createElement(
               "article"
@@ -1144,6 +1246,15 @@
 
           article.className =
             "signet";
+
+
+          if (Boolean(signet.est_lu)) {
+
+            article.classList.add(
+              "read"
+            );
+
+          }
 
 
           const date =
@@ -1220,6 +1331,21 @@
               )}
             </div>
 
+            <div class="signet-actions">
+
+              <button
+                type="button"
+                class="read-button"
+              >
+                ${
+                  Boolean(signet.est_lu)
+                    ? "☑ Non lu"
+                    : "☐ Lu"
+                }
+              </button>
+
+            </div>
+
           `;
 
 
@@ -1227,6 +1353,110 @@
             article.querySelector(
               ".title-button"
             );
+
+
+          const readButton =
+            article.querySelector(
+              ".read-button"
+            );
+
+
+          /*
+           * Bouton Lu / Non lu
+           */
+
+          readButton.addEventListener(
+            "click",
+            async () => {
+
+              const newValue =
+                !Boolean(signet.est_lu);
+
+
+              readButton.disabled =
+                true;
+
+
+              const {
+                error
+              } =
+                await client
+                  .from("signets")
+                  .update({
+                    est_lu: newValue
+                  })
+                  .eq(
+                    "id",
+                    signet.id
+                  );
+
+
+              if (error) {
+
+                console.error(
+                  "Erreur mise à jour est_lu :",
+                  error
+                );
+
+                readButton.disabled =
+                  false;
+
+                return;
+
+              }
+
+
+              /*
+               * Mise à jour immédiate
+               * de l'objet affiché.
+               */
+
+              signet.est_lu =
+                newValue;
+
+
+              /*
+               * Mise à jour de la copie
+               * principale en mémoire.
+               */
+
+              const localSignet =
+                allSignets.find(
+                  s =>
+                    String(s.id) ===
+                    String(signet.id)
+                );
+
+
+              if (localSignet) {
+
+                localSignet.est_lu =
+                  newValue;
+
+              }
+
+
+              /*
+               * Mise à jour visuelle
+               */
+
+              article.classList.toggle(
+                "read",
+                newValue
+              );
+
+
+              readButton.textContent =
+                newValue
+                  ? "☑ Non lu"
+                  : "☐ Lu";
+
+
+              readButton.disabled =
+                false;
+
+            }
+          );
 
 
           titleButton.addEventListener(
@@ -1302,7 +1532,7 @@
         await client
           .from("signets")
           .select(
-            "id, title, url, resume_ia, saved_at, embedding_version"
+            "id, title, url, resume_ia, saved_at, embedding_version, est_lu"
           )
           .order(
             "saved_at",
