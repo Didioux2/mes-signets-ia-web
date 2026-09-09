@@ -1,9 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Mes Signets IA</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -15,174 +16,350 @@
 
     body {
       margin: 0;
-      padding: 0;
+      padding: 32px 20px;
       font-family: Arial, sans-serif;
-      background: #f5f7fa;
+      background: #fff;
       color: #222;
     }
 
-    .container {
-      width: 100%;
+    #app {
       max-width: 1000px;
       margin: 0 auto;
-      padding: 24px;
     }
 
     header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       gap: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     h1 {
       margin: 0;
       font-size: 28px;
+      white-space: nowrap;
     }
 
     .subtitle {
-      margin-top: 6px;
+      margin-top: 5px;
       color: #666;
+      font-size: 14px;
     }
 
     button {
-      border: 0;
+      border: none;
       border-radius: 8px;
-      padding: 10px 16px;
-      font-size: 14px;
       cursor: pointer;
+      font-family: Arial, sans-serif;
     }
 
-    #loginButton {
-      background: #222;
-      color: white;
+    #logoutBtn {
+      padding: 9px 13px;
+      background: #444;
+      color: #fff;
+      font-size: 13px;
+      white-space: nowrap;
     }
 
-    #logoutButton {
-      background: #e9ecef;
-      color: #222;
+    #logoutBtn:hover {
+      background: #333;
     }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* --------------------------------------------------
+       CONNEXION
+    -------------------------------------------------- */
 
     #loginSection {
+      max-width: 500px;
+      margin: 100px auto;
+      padding: 35px;
+      background: #fff;
+      border-radius: 14px;
       text-align: center;
-      padding: 100px 20px;
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
     }
 
-    #loginSection h1 {
-      margin-bottom: 10px;
+    #loginSection h2 {
+      margin: 0 0 12px;
+      font-size: 24px;
     }
 
-    #app {
-      display: none;
+    #loginSection p {
+      margin: 0 0 25px;
+      color: #666;
     }
+
+    #loginBtn {
+      padding: 10px 16px;
+      background: #4285f4;
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    #loginBtn:hover {
+      background: #3367d6;
+    }
+
+    /* --------------------------------------------------
+       UTILISATEUR
+    -------------------------------------------------- */
 
     #userInfo {
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       color: #666;
-      font-size: 14px;
+      font-size: 13px;
     }
 
-    .searchBox {
+    /* --------------------------------------------------
+       RECHERCHE
+    -------------------------------------------------- */
+
+    .search-section {
       display: flex;
-      gap: 10px;
-      margin-bottom: 12px;
+      gap: 8px;
+      margin: 18px 0;
     }
 
     #searchInput {
       flex: 1;
       min-width: 0;
-      padding: 13px 15px;
-      border: 1px solid #d6dbe1;
+      padding: 10px 12px;
+      border: 1px solid #d5d9df;
       border-radius: 8px;
-      background: white;
-      font-size: 16px;
       outline: none;
+      background: #fff;
+      color: #222;
+      font-size: 14px;
     }
 
     #searchInput:focus {
-      border-color: #888;
+      border-color: #1976d2;
+      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.08);
     }
 
-    #searchButton {
-      background: #222;
-      color: white;
-      min-width: 120px;
+    #searchButton,
+    #resetSearchButton {
+      padding: 9px 12px;
+      background: #fff;
+      border: 1px solid #ccc;
+      color: #222;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    #searchButton:hover,
+    #resetSearchButton:hover {
+      background: #f5f5f5;
     }
 
     #searchButton:disabled {
       opacity: 0.6;
-      cursor: wait;
+      cursor: default;
     }
+
+    /* --------------------------------------------------
+       MESSAGE / STATUT
+    -------------------------------------------------- */
 
     #status {
-      margin: 10px 0 18px;
+      min-height: 18px;
+      margin: 8px 0 12px;
       color: #666;
-      font-size: 14px;
-      min-height: 20px;
+      font-size: 13px;
     }
+
+    /* --------------------------------------------------
+       SIGNETS — STYLE IDENTIQUE À L'EXTENSION
+    -------------------------------------------------- */
 
     .signet {
-      background: white;
-      border-radius: 10px;
-      padding: 18px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      padding: 10px 0;
+      border-top: 1px solid #ddd;
+      transition:
+        background 0.15s ease,
+        opacity 0.15s ease;
     }
 
-    .signet h2 {
-      margin: 0 0 8px;
+    .signet-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .title-button {
+      flex: 1;
+      padding: 2px 0;
+      margin: 0;
+      border: 0;
+      background: none;
+      text-align: left;
+      cursor: pointer;
+
+      font-family: Georgia, serif;
       font-size: 19px;
-    }
-
-    .signet h2 a {
+      line-height: 1.35;
       color: #222;
-      text-decoration: none;
     }
 
-    .signet h2 a:hover {
+    .title-button:hover {
+      color: #1976d2;
+    }
+
+    .title-button::before {
+      content: "▶";
+      display: inline-block;
+      margin-right: 8px;
+
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+
+      transition: transform 0.15s ease;
+    }
+
+    .signet.open .title-button::before {
+      transform: rotate(90deg);
+    }
+
+    .external-link {
+      flex-shrink: 0;
+      padding-top: 4px;
+
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #1976d2;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .external-link:hover {
       text-decoration: underline;
     }
 
-    .date {
-      color: #888;
-      font-size: 13px;
-      margin-bottom: 10px;
-    }
-
-    .resume {
-      color: #444;
-      line-height: 1.55;
-      white-space: pre-line;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 50px 20px;
+    .article-date {
+      margin: 5px 0 0 22px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
       color: #777;
-      background: white;
-      border-radius: 10px;
     }
+
+    .relevance {
+      margin: 7px 0 0 22px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .summary {
+      display: none;
+      margin: 12px 0 4px 22px;
+
+      font-family: Georgia, serif;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .signet.open .summary {
+      display: block;
+    }
+
+    .summary-section-title {
+      margin: 18px 0 8px;
+
+      font-family: Georgia, serif;
+      font-size: 19px;
+      line-height: 1.3;
+      color: #1976d2;
+      font-weight: bold;
+    }
+
+    .summary-paragraph {
+      margin: 0 0 10px;
+    }
+
+    .summary-list {
+      margin: 0 0 12px 22px;
+      padding: 0;
+    }
+
+    .summary-list li {
+      margin-bottom: 6px;
+    }
+
+    /* --------------------------------------------------
+       ABSENCE DE RÉSULTAT
+    -------------------------------------------------- */
+
+    #empty {
+      padding: 20px 0;
+      font-family: Georgia, serif;
+      font-size: 15px;
+      color: #666;
+    }
+
+    /* --------------------------------------------------
+       MOBILE
+    -------------------------------------------------- */
 
     @media (max-width: 600px) {
-      .container {
-        padding: 15px;
+
+      body {
+        padding: 18px 12px;
       }
 
       header {
-        align-items: flex-start;
+        gap: 10px;
       }
 
       h1 {
-        font-size: 23px;
+        font-size: 22px;
       }
 
-      .searchBox {
-        flex-direction: column;
+      .subtitle {
+        font-size: 13px;
       }
 
-      #searchButton {
-        width: 100%;
+      #logoutBtn {
+        padding: 8px 11px;
+        font-size: 12px;
+      }
+
+      .search-section {
+        gap: 6px;
+      }
+
+      #searchInput {
+        padding: 9px 10px;
+        font-size: 13px;
+      }
+
+      #searchButton,
+      #resetSearchButton {
+        padding: 8px 9px;
+        font-size: 12px;
+      }
+
+      .title-button {
+        font-size: 17px;
+        line-height: 1.4;
+      }
+
+      .external-link {
+        font-size: 11px;
+      }
+
+      .summary {
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .summary-section-title {
+        font-size: 18px;
       }
     }
   </style>
@@ -190,31 +367,33 @@
 
 <body>
 
-  <!-- ============================================================
+  <!-- ==================================================
        CONNEXION
-       ============================================================ -->
+  =================================================== -->
 
-  <section id="loginSection">
-    <h1>🔖 Mes Signets IA</h1>
-    <p class="subtitle">Votre bibliothèque personnelle</p>
+  <section id="loginSection" class="hidden">
 
-    <br>
+    <h2>🔖 Mes Signets IA</h2>
 
-    <button id="loginButton">
-      🔐 Se connecter avec Google
+    <p>
+      Connectez-vous pour accéder à votre bibliothèque personnelle.
+    </p>
+
+    <button id="loginBtn" type="button">
+      🔵 Se connecter avec Google
     </button>
 
-    <div id="loginStatus"></div>
   </section>
 
 
-  <!-- ============================================================
+  <!-- ==================================================
        APPLICATION
-       ============================================================ -->
+  =================================================== -->
 
-  <main id="app" class="container">
+  <div id="app" class="hidden">
 
     <header>
+
       <div>
         <h1>🔖 Mes Signets IA</h1>
         <div class="subtitle">
@@ -222,19 +401,18 @@
         </div>
       </div>
 
-      <button id="logoutButton">
+      <button id="logoutBtn" type="button">
         Déconnexion
       </button>
+
     </header>
 
     <div id="userInfo"></div>
 
 
-    <!-- ==========================================================
-         RECHERCHE
-         ========================================================== -->
+    <!-- RECHERCHE -->
 
-    <div class="searchBox">
+    <div class="search-section">
 
       <input
         type="search"
@@ -243,23 +421,35 @@
         autocomplete="off"
       >
 
-      <button id="searchButton">
-        🔎 Rechercher
+      <button id="searchButton" type="button">
+        Rechercher
+      </button>
+
+      <button id="resetSearchButton" type="button">
+        Tous
       </button>
 
     </div>
 
-    <div id="status"></div>
 
-    <section id="signets"></section>
+    <div id="status">
+      Chargement des signets...
+    </div>
 
-  </main>
+    <div id="signets"></div>
+
+    <div id="empty" class="hidden">
+      Aucun signet ne correspond à cette recherche.
+    </div>
+
+  </div>
 
 
   <script>
-    // ============================================================
-    // SUPABASE
-    // ============================================================
+
+    /* ==================================================
+       SUPABASE
+    ================================================== */
 
     const SUPABASE_URL =
       "https://imehbthvldsqmxobivka.supabase.co";
@@ -274,24 +464,75 @@
       );
 
 
-    // ============================================================
-    // CONSTANTES RECHERCHE
-    // ============================================================
+    /* ==================================================
+       DOM
+    ================================================== */
 
-    const SEMANTIC_THRESHOLD = 0.60;
-    const CONVERSATIONAL_SEMANTIC_THRESHOLD = 0.55;
-    const KEYWORD_RESCUE_SEMANTIC_THRESHOLD = 0.45;
+    const loginSection =
+      document.getElementById("loginSection");
 
-    const SEMANTIC_WEIGHT = 0.75;
-    const KEYWORD_WEIGHT = 0.25;
+    const app =
+      document.getElementById("app");
 
-    const EMBEDDING_DIMENSION = 768;
+    const loginBtn =
+      document.getElementById("loginBtn");
+
+    const logoutBtn =
+      document.getElementById("logoutBtn");
+
+    const userInfo =
+      document.getElementById("userInfo");
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const searchButton =
+      document.getElementById("searchButton");
+
+    const resetSearchButton =
+      document.getElementById("resetSearchButton");
+
+    const status =
+      document.getElementById("status");
+
+    const signetsContainer =
+      document.getElementById("signets");
+
+    const empty =
+      document.getElementById("empty");
 
 
-    // ============================================================
-    // STOPWORDS
-    // Même liste que search.js
-    // ============================================================
+    let allSignets = [];
+
+
+    /* ==================================================
+       UTILITAIRES
+    ================================================== */
+
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function normalizeText(text) {
+
+      return String(text || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^\p{L}\p{N}\s]/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    }
+
 
     const STOPWORDS = new Set([
       "a","ai","au","aux","avec","ce","ces","dans","de","des","du",
@@ -304,11 +545,6 @@
     ]);
 
 
-    // ============================================================
-    // MOTS CONVERSATIONNELS
-    // Même liste que search.js
-    // ============================================================
-
     const CONVERSATIONAL_WORDS = new Set([
       "comment","pourquoi","explique","expliquer","parle","parler",
       "dis","dire","montre","montrer","cherche","chercher","trouve",
@@ -316,28 +552,16 @@
     ]);
 
 
-    // ============================================================
-    // NORMALISATION
-    // ============================================================
-
-    function normalizeText(text) {
-      return String(text || "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .replace(/[^\p{L}\p{N}\s]/gu, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-
-
     function normalizeSearchWord(word) {
+
       return normalizeText(word)
         .replace(/\s+/g, "");
+
     }
 
 
     function getSignificantWords(query) {
+
       return normalizeText(query)
         .split(/\s+/)
         .map(normalizeSearchWord)
@@ -346,27 +570,24 @@
           word.length > 1 &&
           !STOPWORDS.has(word)
         );
+
     }
 
 
     function isConversationalQuery(query) {
-      const words =
-        getSignificantWords(query);
 
-      return words.some(word =>
-        CONVERSATIONAL_WORDS.has(word)
-      );
+      return getSignificantWords(query)
+        .some(word =>
+          CONVERSATIONAL_WORDS.has(word)
+        );
+
     }
 
 
-    // ============================================================
-    // SCORE LEXICAL
-    // ============================================================
-
-    function wordMatches(queryWord, signetText) {
+    function wordMatches(queryWord, text) {
 
       const normalizedText =
-        normalizeText(signetText);
+        normalizeText(text);
 
       const words =
         normalizedText.split(/\s+/);
@@ -376,6 +597,7 @@
         word.startsWith(queryWord) ||
         queryWord.startsWith(word)
       );
+
     }
 
 
@@ -401,24 +623,32 @@
 
       for (const queryWord of queryWords) {
 
-        if (
-          wordMatches(
-            queryWord,
-            text
-          )
-        ) {
+        if (wordMatches(queryWord, text)) {
           matches++;
         }
+
       }
 
       return matches / queryWords.length;
+
     }
 
 
-    // ============================================================
-    // CLASSEMENT SÉMANTIQUE
-    // Copie conforme de search.js
-    // ============================================================
+    /* ==================================================
+       PARAMÈTRES RECHERCHE
+    ================================================== */
+
+    const SEMANTIC_THRESHOLD = 0.60;
+    const CONVERSATIONAL_SEMANTIC_THRESHOLD = 0.55;
+    const KEYWORD_RESCUE_SEMANTIC_THRESHOLD = 0.45;
+
+    const SEMANTIC_WEIGHT = 0.75;
+    const KEYWORD_WEIGHT = 0.25;
+
+
+    /* ==================================================
+       CLASSEMENT SÉMANTIQUE
+    ================================================== */
 
     function rankSemanticResults(
       query,
@@ -436,31 +666,12 @@
           ? CONVERSATIONAL_SEMANTIC_THRESHOLD
           : SEMANTIC_THRESHOLD;
 
-      console.log(
-        "🔎 Classement des résultats Supabase :",
-        query
-      );
-
-      console.log(
-        "Seuil sémantique :",
-        semanticThreshold
-      );
-
-      console.log(
-        "Requête conversationnelle :",
-        conversational
-      );
-
-      console.log(
-        "Candidats pgvector :",
-        semanticRows?.length || 0
-      );
-
       const results = [];
 
       for (const row of semanticRows || []) {
 
         const signet = {
+
           id: String(row.id),
 
           title:
@@ -477,12 +688,12 @@
 
           embedding_version:
             row.embedding_version ?? null
+
         };
 
 
         const semanticScore =
           Number(row.similarity) || 0;
-
 
         const keywordScore =
           calculateKeywordScore(
@@ -516,29 +727,13 @@
           keywordRescue;
 
 
-        console.log(
-          `🔎 ${semanticScore.toFixed(4)} | ` +
-          `mots : ${keywordScore.toFixed(4)} | ` +
-          `final : ${finalScore.toFixed(4)} | ` +
-          `lexical complet : ${
-            keywordComplete ? "OUI" : "NON"
-          } | ` +
-          `secours : ${
-            keywordRescue ? "OUI" : "NON"
-          } | ` +
-          `retenu : ${
-            accepted ? "OUI" : "NON"
-          } | ` +
-          `${signet.title}`
-        );
-
-
         if (!accepted) {
           continue;
         }
 
 
         results.push({
+
           ...signet,
 
           semantic_score:
@@ -558,7 +753,9 @@
 
           relevance:
             Math.round(finalScore * 100)
+
         });
+
       }
 
 
@@ -569,299 +766,42 @@
       );
 
 
-      console.log(
-        "Résultats retenus :",
-        results.length
-      );
-
-      console.log(
-        "══════════════════════════════════════"
-      );
-
-
       return results;
+
     }
 
 
-    // ============================================================
-    // ÉCHAPPEMENT HTML
-    // ============================================================
+    /* ==================================================
+       RECHERCHE CLASSIQUE
+    ================================================== */
 
-    function escapeHtml(value) {
+    async function rechercheClassique(query) {
 
-      return String(value || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-
-    // ============================================================
-    // FORMAT DATE
-    // ============================================================
-
-    function formatDate(value) {
-
-      if (!value) {
-        return "";
-      }
-
-      const date =
-        new Date(value);
-
-      if (
-        Number.isNaN(
-          date.getTime()
-        )
-      ) {
-        return "";
-      }
-
-      return date.toLocaleDateString(
-        "fr-FR",
-        {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric"
-        }
-      );
-    }
-
-
-    // ============================================================
-    // FORMAT RÉSUMÉ
-    // ============================================================
-
-    function formatResume(text) {
-
-      if (!text) {
-        return "";
-      }
-
-      return escapeHtml(text);
-    }
-
-
-    // ============================================================
-    // AFFICHAGE
-    // ============================================================
-
-    function afficherSignets(signets) {
-
-      const container =
-        document.getElementById("signets");
-
-      container.innerHTML = "";
-
-
-      if (!signets || !signets.length) {
-
-        container.innerHTML = `
-          <div class="empty">
-            Aucun signet trouvé.
-          </div>
-        `;
-
-        return;
-      }
-
-
-      for (const signet of signets) {
-
-        const article =
-          document.createElement("article");
-
-        article.className = "signet";
-
-
-        const title =
-          escapeHtml(
-            signet.title ||
-            signet.titre ||
-            "Sans titre"
-          );
-
-
-        const url =
-          escapeHtml(
-            signet.url || "#"
-          );
-
-
-        const date =
-          formatDate(
-            signet.saved_at
-          );
-
-
-        const resume =
-          formatResume(
-            signet.resume_ia
-          );
-
-
-        article.innerHTML = `
-
-          <h2>
-            <a
-              href="${url}"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              ${title}
-            </a>
-          </h2>
-
-          ${
-            date
-              ? `<div class="date">
-                   📅 ${date}
-                 </div>`
-              : ""
-          }
-
-          ${
-            resume
-              ? `<div class="resume">
-                   ${resume}
-                 </div>`
-              : ""
-          }
-
-        `;
-
-
-        container.appendChild(
-          article
-        );
-      }
-    }
-
-
-    // ============================================================
-    // CHARGEMENT INITIAL
-    // ============================================================
-
-    let tousLesSignets = [];
-
-
-    async function chargerSignets() {
-
-      const status =
-        document.getElementById("status");
-
-      status.textContent =
-        "Chargement de vos signets…";
-
-
-      const {
-        data,
-        error
-      } =
-        await client
-          .from("signets")
-          .select(
-            "id, title, titre, url, resume_ia, saved_at, embedding_version"
-          )
-          .order(
-            "saved_at",
-            {
-              ascending: false
-            }
-          );
-
-
-      if (error) {
-
-        console.error(
-          "❌ Erreur chargement signets :",
-          error
-        );
-
-        status.textContent =
-          "❌ Impossible de charger les signets.";
-
-        return;
-      }
-
-
-      tousLesSignets =
-        data || [];
-
-
-      afficherSignets(
-        tousLesSignets
-      );
-
-
-      status.textContent =
-        `${tousLesSignets.length} signet(s)`;
-    }
-
-
-    // ============================================================
-    // RECHERCHE CLASSIQUE CLOUD
-    // ============================================================
-
-    async function rechercheClassiqueCloud(
-      query
-    ) {
-
-      console.log(
-        "☁️ Recherche classique Supabase :",
-        query
-      );
-
-
-      const {
-        data,
-        error
-      } =
+      const { data, error } =
         await client.rpc(
           "recherche_classique",
           {
-            search_query: query,
-            match_count: 20
+            recherche:
+              query
           }
         );
 
-
       if (error) {
-
-        console.error(
-          "❌ Recherche classique :",
-          error
-        );
-
         throw error;
       }
 
-
       return data || [];
+
     }
 
 
-    // ============================================================
-    // EMBEDDING DE RECHERCHE
-    // Edge Function
-    // ============================================================
+    /* ==================================================
+       EMBEDDING DE RECHERCHE
+    ================================================== */
 
-    async function generateSearchEmbedding(
-      query
-    ) {
+    async function generateSearchEmbedding(query) {
 
-      console.log(
-        "🧠 Génération embedding de recherche :",
-        query
-      );
-
-
-      const {
-        data,
-        error
-      } =
+      const { data, error } =
         await client.functions.invoke(
           "generate-search-embedding",
           {
@@ -871,69 +811,38 @@
           }
         );
 
-
       if (error) {
-
-        console.error(
-          "❌ Edge Function embedding :",
-          error
-        );
-
         throw error;
       }
-
 
       const embedding =
         data?.embedding;
 
-
       if (
         !Array.isArray(embedding) ||
-        embedding.length !== EMBEDDING_DIMENSION
+        embedding.length !== 768
       ) {
-
         throw new Error(
-          `Embedding de recherche invalide : ${
-            embedding?.length || 0
-          } dimensions`
+          "Embedding de recherche invalide."
         );
       }
 
-
-      console.log(
-        "✅ Embedding reçu :",
-        embedding.length,
-        "dimensions"
-      );
-
-
       return embedding;
+
     }
 
 
-    // ============================================================
-    // RECHERCHE SÉMANTIQUE CLOUD
-    // ============================================================
+    /* ==================================================
+       RECHERCHE SÉMANTIQUE CLOUD
+    ================================================== */
 
-    async function rechercheSemantiqueCloud(
-      query
-    ) {
+    async function rechercheSemantique(query) {
 
       const queryEmbedding =
-        await generateSearchEmbedding(
-          query
-        );
+        await generateSearchEmbedding(query);
 
 
-      console.log(
-        "☁️ Appel RPC match_signets..."
-      );
-
-
-      const {
-        data,
-        error
-      } =
+      const { data, error } =
         await client.rpc(
           "match_signets",
           {
@@ -950,392 +859,703 @@
 
 
       if (error) {
-
-        console.error(
-          "❌ Recherche sémantique :",
-          error
-        );
-
         throw error;
       }
 
 
-      console.log(
-        "☁️ Résultats pgvector :",
-        data?.length || 0
+      return rankSemanticResults(
+        query,
+        data || []
       );
 
-
-      return data || [];
     }
 
 
-    // ============================================================
-    // RECHERCHE PRINCIPALE
-    //
-    // 1. classique
-    // 2. si 0 → sémantique
-    // 3. classement
-    // ============================================================
+    /* ==================================================
+       RECHERCHE PRINCIPALE
+    ================================================== */
 
-    async function rechercherSignets() {
-
-      const input =
-        document.getElementById(
-          "searchInput"
-        );
-
-      const button =
-        document.getElementById(
-          "searchButton"
-        );
-
-      const status =
-        document.getElementById(
-          "status"
-        );
-
+    async function rechercher() {
 
       const query =
-        input.value.trim();
+        searchInput.value.trim();
 
-
-      // ----------------------------------------------------------
-      // CHAMP VIDE
-      // ----------------------------------------------------------
 
       if (!query) {
 
         afficherSignets(
-          tousLesSignets
+          allSignets
         );
 
         status.textContent =
-          `${tousLesSignets.length} signet(s)`;
+          allSignets.length +
+          " signet" +
+          (
+            allSignets.length > 1
+              ? "s"
+              : ""
+          );
 
         return;
+
       }
 
 
-      button.disabled = true;
+      searchButton.disabled = true;
+
+      status.textContent =
+        "🔎 Recherche en cours…";
 
 
       try {
 
-        // --------------------------------------------------------
-        // CLASSIQUE
-        // --------------------------------------------------------
+        /*
+         * 1. RECHERCHE CLASSIQUE CLOUD
+         */
 
-        status.textContent =
-          "🔎 Recherche classique…";
-
-
-        const classicRows =
-          await rechercheClassiqueCloud(
+        const classicResults =
+          await rechercheClassique(
             query
           );
 
 
-        console.log(
-          "☁️ Recherche classique :",
-          classicRows.length,
-          "résultat(s)."
-        );
-
-
-        // --------------------------------------------------------
-        // CLASSIQUE TROUVÉ
-        // --------------------------------------------------------
-
-        if (classicRows.length > 0) {
+        if (
+          classicResults.length > 0
+        ) {
 
           afficherSignets(
-            classicRows
+            classicResults
           );
 
           status.textContent =
-            `${classicRows.length} résultat(s)`;
+            classicResults.length +
+            " résultat" +
+            (
+              classicResults.length > 1
+                ? "s"
+                : ""
+            );
 
           return;
+
         }
 
 
-        // --------------------------------------------------------
-        // SÉMANTIQUE
-        // --------------------------------------------------------
-
-        console.log(
-          "🧠 Aucun résultat classique cloud → recherche sémantique Supabase."
-        );
-
+        /*
+         * 2. RECHERCHE SÉMANTIQUE
+         */
 
         status.textContent =
-          "🧠 Recherche sémantique…";
+          "🧠 Recherche sémantique en cours…";
 
 
-        const semanticRows =
-          await rechercheSemantiqueCloud(
+        const semanticResults =
+          await rechercheSemantique(
             query
           );
 
 
-        const results =
-          rankSemanticResults(
-            query,
-            semanticRows
-          );
-
-
-        console.log(
-          "🎯 Résultats sémantiques finaux :",
-          results.length
-        );
-
-
         afficherSignets(
-          results
+          semanticResults,
+          semanticResults.length > 0
         );
 
 
-        status.textContent =
-          results.length
-            ? `${results.length} résultat(s) sémantique(s)`
-            : "Aucun résultat.";
+        if (
+          semanticResults.length === 0
+        ) {
 
+          status.textContent =
+            "Aucun signet ne correspond à cette recherche.";
+
+        } else {
+
+          status.textContent =
+            semanticResults.length +
+            " résultat" +
+            (
+              semanticResults.length > 1
+                ? "s"
+                : ""
+            ) +
+            " classé" +
+            (
+              semanticResults.length > 1
+                ? "s"
+                : ""
+            ) +
+            " par pertinence.";
+
+        }
 
       } catch (error) {
 
         console.error(
-          "❌ Erreur recherche :",
+          "❌ Recherche :",
           error
         );
 
-
         status.textContent =
-          `❌ Erreur de recherche : ${
-            error.message || error
-          }`;
+          "❌ Erreur pendant la recherche.";
 
       } finally {
 
-        button.disabled = false;
+        searchButton.disabled = false;
+
       }
+
     }
 
 
-    // ============================================================
-    // ÉVÉNEMENTS RECHERCHE
-    //
-    // IMPORTANT :
-    // aucun listener "input"
-    // → aucune recherche pendant la frappe.
-    // ============================================================
+    /* ==================================================
+       FORMATAGE DU RÉSUMÉ
+    ================================================== */
 
-    document
-      .getElementById("searchButton")
-      .addEventListener(
-        "click",
-        rechercherSignets
-      );
+    function formatSummary(text) {
+
+      const lines =
+        String(text || "")
+          .split(/\r?\n/);
+
+      let html = "";
+      let inList = false;
 
 
-    document
-      .getElementById("searchInput")
-      .addEventListener(
-        "keydown",
-        event => {
+      function closeList() {
 
-          if (
-            event.key === "Enter"
-          ) {
+        if (inList) {
+          html += "</ul>";
+          inList = false;
+        }
 
-            event.preventDefault();
+      }
 
-            rechercherSignets();
+
+      for (const rawLine of lines) {
+
+        const line =
+          rawLine.trim();
+
+
+        if (!line) {
+          continue;
+        }
+
+
+        const sectionMatch =
+          line.match(
+            /^##\*\*_?\s*(.*?)\s*_?\*\*##$/
+          );
+
+
+        if (sectionMatch) {
+
+          closeList();
+
+          html +=
+            `<div class="summary-section-title">${
+              escapeHtml(
+                sectionMatch[1]
+              )
+            }</div>`;
+
+          continue;
+
+        }
+
+
+        const bulletMatch =
+          line.match(
+            /^[-•*]\s+(.+)$/
+          );
+
+
+        if (bulletMatch) {
+
+          if (!inList) {
+
+            html +=
+              '<ul class="summary-list">';
+
+            inList = true;
+
           }
+
+          html +=
+            `<li>${escapeHtml(
+              bulletMatch[1]
+            )}</li>`;
+
+          continue;
+
+        }
+
+
+        closeList();
+
+        html +=
+          `<p class="summary-paragraph">${
+            escapeHtml(line)
+          }</p>`;
+
+      }
+
+
+      closeList();
+
+      return html;
+
+    }
+
+
+    /* ==================================================
+       AFFICHAGE DES SIGNETS
+    ================================================== */
+
+    function afficherSignets(
+      signets,
+      showRelevance = false
+    ) {
+
+      signetsContainer.innerHTML = "";
+      empty.classList.add("hidden");
+
+
+      if (
+        !signets ||
+        signets.length === 0
+      ) {
+
+        empty.classList.remove(
+          "hidden"
+        );
+
+        return;
+
+      }
+
+
+      signets.forEach(
+        (signet) => {
+
+          const article =
+            document.createElement(
+              "article"
+            );
+
+          article.className =
+            "signet";
+
+
+          const date =
+            signet.saved_at
+              ? new Date(
+                  signet.saved_at
+                ).toLocaleString(
+                  "fr-FR"
+                )
+              : "";
+
+
+          const title =
+            escapeHtml(
+              signet.title ||
+              "Sans titre"
+            );
+
+
+          const url =
+            escapeHtml(
+              signet.url ||
+              "#"
+            );
+
+
+          article.innerHTML = `
+
+            <div class="signet-header">
+
+              <button
+                type="button"
+                class="title-button"
+              >
+                ${title}
+              </button>
+
+              <a
+                class="external-link"
+                href="${url}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                ↗ Article
+              </a>
+
+            </div>
+
+            ${
+              date
+                ? `
+                  <div class="article-date">
+                    ${escapeHtml(date)}
+                  </div>
+                `
+                : ""
+            }
+
+            ${
+              showRelevance &&
+              signet.relevance != null
+                ? `
+                  <div class="relevance">
+                    Pertinence :
+                    ${signet.relevance} %
+                  </div>
+                `
+                : ""
+            }
+
+            <div class="summary">
+              ${formatSummary(
+                signet.resume_ia
+              )}
+            </div>
+
+          `;
+
+
+          const titleButton =
+            article.querySelector(
+              ".title-button"
+            );
+
+
+          titleButton.addEventListener(
+            "click",
+            () => {
+
+              const wasOpen =
+                article.classList.contains(
+                  "open"
+                );
+
+
+              /*
+               * Un seul signet ouvert
+               */
+
+              document
+                .querySelectorAll(
+                  ".signet.open"
+                )
+                .forEach(
+                  opened => {
+                    opened.classList.remove(
+                      "open"
+                    );
+                  }
+                );
+
+
+              if (!wasOpen) {
+
+                article.classList.add(
+                  "open"
+                );
+
+              }
+
+            }
+          );
+
+
+          signetsContainer.appendChild(
+            article
+          );
+
         }
       );
 
-
-    // ============================================================
-    // GOOGLE LOGIN
-    // ============================================================
-
-    async function connecterGoogle() {
-
-      const loginStatus =
-        document.getElementById(
-          "loginStatus"
-        );
-
-
-      loginStatus.textContent =
-        "Connexion…";
-
-
-      const {
-        error
-      } =
-        await client.auth.signInWithOAuth(
-          {
-            provider: "google",
-
-            options: {
-              redirectTo:
-                "https://didioux2.github.io/mes-signets-ia-web/"
-            }
-          }
-        );
-
-
-      if (error) {
-
-        console.error(
-          "❌ Erreur Google OAuth :",
-          error
-        );
-
-        loginStatus.textContent =
-          `❌ ${error.message}`;
-      }
     }
 
 
-    document
-      .getElementById("loginButton")
-      .addEventListener(
-        "click",
-        connecterGoogle
+    /* ==================================================
+       CHARGEMENT DES SIGNETS
+    ================================================== */
+
+    async function chargerSignets() {
+
+      status.textContent =
+        "Chargement des signets…";
+
+      signetsContainer.innerHTML =
+        "";
+
+      empty.classList.add(
+        "hidden"
       );
 
 
-    // ============================================================
-    // LOGOUT
-    // ============================================================
-
-    async function deconnecter() {
-
       const {
+        data,
         error
       } =
-        await client.auth.signOut();
+        await client
+          .from("signets")
+          .select(
+            "id, title, url, resume_ia, saved_at, embedding_version"
+          )
+          .order(
+            "saved_at",
+            {
+              ascending: false
+            }
+          );
 
 
       if (error) {
 
         console.error(
-          "❌ Erreur déconnexion :",
+          "Erreur chargement signets :",
           error
         );
+
+        status.textContent =
+          "❌ Impossible de charger les signets.";
 
         return;
+
       }
 
 
-      afficherEtatConnexion(
-        null
+      allSignets =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      afficherSignets(
+        allSignets
       );
+
+
+      if (
+        allSignets.length === 0
+      ) {
+
+        status.textContent =
+          "Aucun signet enregistré.";
+
+      } else {
+
+        status.textContent =
+          allSignets.length +
+          " signet" +
+          (
+            allSignets.length > 1
+              ? "s"
+              : ""
+          );
+
+      }
+
     }
 
 
-    document
-      .getElementById("logoutButton")
-      .addEventListener(
-        "click",
-        deconnecter
-      );
+    /* ==================================================
+       AUTHENTIFICATION
+    ================================================== */
 
-
-    // ============================================================
-    // ÉTAT DE CONNEXION
-    // ============================================================
-
-    async function afficherEtatConnexion(
+    async function afficherApplication(
       session
     ) {
 
-      const loginSection =
-        document.getElementById(
-          "loginSection"
-        );
-
-      const app =
-        document.getElementById(
-          "app"
-        );
-
-      const userInfo =
-        document.getElementById(
-          "userInfo"
-        );
-
-
       if (!session) {
 
-        loginSection.style.display =
-          "block";
+        app.classList.add(
+          "hidden"
+        );
 
-        app.style.display =
-          "none";
-
-        userInfo.textContent =
-          "";
+        loginSection.classList.remove(
+          "hidden"
+        );
 
         return;
+
       }
 
 
-      loginSection.style.display =
-        "none";
+      loginSection.classList.add(
+        "hidden"
+      );
 
-      app.style.display =
-        "block";
-
-
-      const user =
-        session.user;
-
-
-      const email =
-        user?.email || "";
+      app.classList.remove(
+        "hidden"
+      );
 
 
       userInfo.textContent =
-        email
-          ? `Connecté : ${email}`
-          : "Connecté";
+        "Connecté : " +
+        (
+          session.user.email ||
+          "utilisateur"
+        );
 
 
       await chargerSignets();
+
     }
 
 
-    // ============================================================
-    // AUTH STATE
-    // ============================================================
+    loginBtn.addEventListener(
+      "click",
+      async () => {
 
-    client.auth.onAuthStateChange(
-      async (
-        event,
-        session
-      ) => {
+        loginBtn.disabled =
+          true;
 
-        console.log(
-          "🔐 Auth state :",
-          event
-        );
+        loginBtn.textContent =
+          "Connexion…";
 
 
-        await afficherEtatConnexion(
-          session
-        );
+        const {
+          error
+        } =
+          await client.auth
+            .signInWithOAuth({
+              provider: "google",
+
+              options: {
+                redirectTo:
+                  "https://didioux2.github.io/mes-signets-ia-web/"
+              }
+            });
+
+
+        if (error) {
+
+          console.error(
+            "Erreur Google OAuth :",
+            error
+          );
+
+          loginBtn.disabled =
+            false;
+
+          loginBtn.textContent =
+            "🔵 Se connecter avec Google";
+
+          alert(
+            "Erreur de connexion : " +
+            error.message
+          );
+
+        }
+
       }
     );
 
 
-    // ============================================================
-    // SESSION INITIALE
-    // ============================================================
+    logoutBtn.addEventListener(
+      "click",
+      async () => {
+
+        const {
+          error
+        } =
+          await client.auth.signOut();
+
+
+        if (error) {
+
+          console.error(
+            "Erreur déconnexion :",
+            error
+          );
+
+          alert(
+            "Erreur lors de la déconnexion."
+          );
+
+          return;
+
+        }
+
+
+        window.location.reload();
+
+      }
+    );
+
+
+    /* ==================================================
+       RECHERCHE : CLIC + ENTRÉE UNIQUEMENT
+    ================================================== */
+
+    searchButton.addEventListener(
+      "click",
+      rechercher
+    );
+
+
+    searchInput.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          event.preventDefault();
+
+          rechercher();
+
+        }
+
+      }
+    );
+
+
+    resetSearchButton.addEventListener(
+      "click",
+      () => {
+
+        searchInput.value = "";
+
+        afficherSignets(
+          allSignets
+        );
+
+        status.textContent =
+          allSignets.length +
+          " signet" +
+          (
+            allSignets.length > 1
+              ? "s"
+              : ""
+          );
+
+      }
+    );
+
+
+    /* ==================================================
+       SESSION SUPABASE
+    ================================================== */
+
+    client.auth.onAuthStateChange(
+      async (
+        _event,
+        session
+      ) => {
+
+        await afficherApplication(
+          session
+        );
+
+      }
+    );
+
 
     async function init() {
 
@@ -1349,17 +1569,23 @@
       if (error) {
 
         console.error(
-          "❌ Erreur récupération session :",
+          "Erreur récupération session :",
           error
         );
 
+        loginSection.classList.remove(
+          "hidden"
+        );
+
         return;
+
       }
 
 
-      await afficherEtatConnexion(
+      await afficherApplication(
         data.session
       );
+
     }
 
 
@@ -1369,3 +1595,4 @@
 
 </body>
 </html>
+```
