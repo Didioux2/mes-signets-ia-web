@@ -780,8 +780,8 @@
         await client.rpc(
           "recherche_classique",
           {
-            recherche:
-              query
+            search_query: query,
+            match_count: 20
           }
         );
 
