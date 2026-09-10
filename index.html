@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Mes Signets IA</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -140,7 +143,8 @@
 
     #searchInput:focus {
       border-color: #1976d2;
-      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.08);
+      box-shadow:
+        0 0 0 2px rgba(25, 118, 210, 0.08);
     }
 
     #searchButton,
@@ -191,7 +195,8 @@
     }
 
     .signet:hover {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .signet-header {
@@ -202,13 +207,12 @@
 
     .title-button {
       flex: 1;
-      padding: 2px 0;
-      margin: 0;
       border: 0;
       background: none;
+      padding: 2px 0;
+      margin: 0;
       text-align: left;
       cursor: pointer;
-
       font-family: Georgia, serif;
       font-size: 19px;
       line-height: 1.35;
@@ -223,12 +227,10 @@
       content: "▶";
       display: inline-block;
       margin-right: 8px;
-
       font-family: Arial, sans-serif;
       font-size: 11px;
-      color: #1976d2;
-
       transition: transform 0.15s ease;
+      color: #1976d2;
     }
 
     .signet.open .title-button::before {
@@ -237,24 +239,16 @@
 
     .external-link {
       flex-shrink: 0;
-      padding-top: 4px;
-
       font-family: Arial, sans-serif;
       font-size: 12px;
       color: #1976d2;
       text-decoration: none;
+      padding-top: 4px;
       white-space: nowrap;
     }
 
     .external-link:hover {
       text-decoration: underline;
-    }
-
-    .article-date {
-      margin: 5px 0 0 22px;
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-      color: #888;
     }
 
     .relevance {
@@ -264,17 +258,18 @@
       color: #777;
     }
 
-    /* --------------------------------------------------
-       RÉSUMÉ
-    -------------------------------------------------- */
+    .article-date {
+      margin: 5px 0 0 22px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #888;
+    }
 
     .summary {
       display: none;
       margin: 15px 0 5px 22px;
       padding: 2px 0 2px 16px;
-
       border-left: 3px solid #dbe7f4;
-
       font-family: Georgia, serif;
       font-size: 15px;
       line-height: 1.7;
@@ -285,14 +280,16 @@
       display: block;
     }
 
+    /* --------------------------------------------------
+       TITRES DES SECTIONS DU RÉSUMÉ
+    -------------------------------------------------- */
+
     .summary-section-title {
       margin: 20px 0 10px;
       padding: 6px 10px;
-
       border-left: 4px solid #1976d2;
       border-radius: 0 6px 6px 0;
       background: #eef5fc;
-
       font-family: Georgia, serif;
       font-size: 18px;
       line-height: 1.35;
@@ -330,28 +327,21 @@
 
     .read-button {
       padding: 6px 10px;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
       border: 1px solid #ccc;
       border-radius: 7px;
       background: #fff;
-      color: #222;
-      font-size: 12px;
-      cursor: pointer;
     }
 
     .read-button:hover {
       background: #f5f5f5;
     }
 
-    .read-button:disabled {
-      opacity: 0.6;
-      cursor: default;
-    }
-
     .signet.read {
       background: #f1f5f2;
       opacity: 0.78;
-      padding-left: 14px;
-      padding-right: 14px;
     }
 
     .signet.read .title-button {
@@ -438,20 +428,14 @@
 
       .summary {
         font-size: 14px;
-        line-height: 1.6;
+        line-height: 1.55;
       }
 
       .summary-section-title {
-        font-size: 17px;
-      }
-
-      .read-button {
-        font-size: 11px;
-        padding: 6px 9px;
+        font-size: 18px;
       }
     }
   </style>
-
 </head>
 
 <body>
@@ -462,19 +446,18 @@
 
   <section id="loginSection" class="hidden">
 
+    <h2>🔖 Mes Signets IA</h2>
 
-<h2>🔖 Mes Signets IA</h2>
+    <p>
+      Connectez-vous pour accéder à votre bibliothèque personnelle.
+    </p>
 
-<p>
-  Connectez-vous pour accéder à votre bibliothèque personnelle.
-</p>
-
-<button id="loginBtn" type="button">
-  🔵 Se connecter avec Google
-</button>
-
+    <button id="loginBtn" type="button">
+      🔵 Se connecter avec Google
+    </button>
 
   </section>
+
 
   <!-- ==================================================
        APPLICATION
@@ -482,58 +465,67 @@
 
   <div id="app" class="hidden">
 
+    <header>
 
-<header>
+      <div>
 
-  <div>
-    <h1>🔖 Mes Signets IA</h1>
+        <h1>🔖 Mes Signets IA</h1>
 
-    <div class="subtitle">
-      Votre bibliothèque personnelle
+        <div class="subtitle">
+          Votre bibliothèque personnelle
+        </div>
+
+      </div>
+
+      <button id="logoutBtn" type="button">
+        Déconnexion
+      </button>
+
+    </header>
+
+    <div id="userInfo"></div>
+
+
+    <!-- RECHERCHE -->
+
+    <div class="search-section">
+
+      <input
+        type="search"
+        id="searchInput"
+        placeholder="🔎 Rechercher dans mes signets..."
+        autocomplete="off"
+      >
+
+      <button
+        id="searchButton"
+        type="button"
+      >
+        Rechercher
+      </button>
+
+      <button
+        id="resetSearchButton"
+        type="button"
+      >
+        Tous
+      </button>
+
     </div>
-  </div>
 
-  <button id="logoutBtn" type="button">
-    Déconnexion
-  </button>
 
-</header>
+    <div id="status">
+      Chargement des signets...
+    </div>
 
-<div id="userInfo"></div>
+    <div id="signets"></div>
 
-<!-- RECHERCHE -->
-
-<div class="search-section">
-
-  <input
-    type="search"
-    id="searchInput"
-    placeholder="🔎 Rechercher dans mes signets..."
-    autocomplete="off"
-  >
-
-  <button id="searchButton" type="button">
-    Rechercher
-  </button>
-
-  <button id="resetSearchButton" type="button">
-    Tous
-  </button>
-
-</div>
-
-<div id="status">
-  Chargement des signets...
-</div>
-
-<div id="signets"></div>
-
-<div id="empty" class="hidden">
-  Aucun signet ne correspond à cette recherche.
-</div>
-
+    <div id="empty" class="hidden">
+      Aucun signet ne correspond à cette recherche.
+    </div>
 
   </div>
+
 
   <script>
 
@@ -591,7 +583,6 @@
     const empty =
       document.getElementById("empty");
 
-
     let allSignets = [];
 
 
@@ -625,20 +616,39 @@
 
 
     const STOPWORDS = new Set([
-      "a","ai","au","aux","avec","ce","ces","dans","de","des","du",
-      "elle","en","es","et","eux","il","ils","je","la","le","les",
-      "leur","leurs","lui","ma","mais","me","mes","mon","ne","nos",
-      "notre","nous","on","ou","par","pas","pour","que","quel",
-      "quelle","quelles","quels","qui","sa","se","sera","ses","son",
-      "sur","ta","te","tes","toi","ton","tu","un","une","vos","votre",
+      "a","ai","au","aux","avec","ce","ces","dans",
+      "de","des","du","elle","en","es","et","eux",
+      "il","ils","je","la","le","les","leur","leurs",
+      "lui","ma","mais","me","mes","mon","ne","nos",
+      "notre","nous","on","ou","par","pas","pour",
+      "que","quel","quelle","quelles","quels","qui",
+      "sa","se","sera","ses","son","sur","ta","te",
+      "tes","toi","ton","tu","un","une","vos","votre",
       "vous","y"
     ]);
 
 
     const CONVERSATIONAL_WORDS = new Set([
-      "comment","pourquoi","explique","expliquer","parle","parler",
-      "dis","dire","montre","montrer","cherche","chercher","trouve",
-      "trouver","donne","donner","quel","quelle","quels","quelles"
+      "comment",
+      "pourquoi",
+      "explique",
+      "expliquer",
+      "parle",
+      "parler",
+      "dis",
+      "dire",
+      "montre",
+      "montrer",
+      "cherche",
+      "chercher",
+      "trouve",
+      "trouver",
+      "donne",
+      "donner",
+      "quel",
+      "quelle",
+      "quels",
+      "quelles"
     ]);
 
 
@@ -691,7 +701,10 @@
     }
 
 
-    function calculateKeywordScore(query, signet) {
+    function calculateKeywordScore(
+      query,
+      signet
+    ) {
 
       const queryWords =
         getSignificantWords(query);
@@ -713,7 +726,12 @@
 
       for (const queryWord of queryWords) {
 
-        if (wordMatches(queryWord, text)) {
+        if (
+          wordMatches(
+            queryWord,
+            text
+          )
+        ) {
           matches++;
         }
 
@@ -729,10 +747,13 @@
     ================================================== */
 
     const SEMANTIC_THRESHOLD = 0.60;
+
     const CONVERSATIONAL_SEMANTIC_THRESHOLD = 0.55;
+
     const KEYWORD_RESCUE_SEMANTIC_THRESHOLD = 0.45;
 
     const SEMANTIC_WEIGHT = 0.75;
+
     const KEYWORD_WEIGHT = 0.25;
 
 
@@ -758,11 +779,14 @@
 
       const results = [];
 
-      for (const row of semanticRows || []) {
+      for (
+        const row of semanticRows || []
+      ) {
 
         const signet = {
 
-          id: String(row.id),
+          id:
+            String(row.id),
 
           title:
             row.title || "",
@@ -780,29 +804,9 @@
             row.embedding_version ?? null,
 
           est_lu:
-            Boolean(row.est_lu)
+            row.est_lu === true
 
         };
-
-
-        /*
-         * Si match_signets ne renvoie pas est_lu,
-         * on récupère l'état depuis allSignets.
-         */
-
-        const localSignet =
-          allSignets.find(
-            s =>
-              String(s.id) === String(row.id)
-          );
-
-        if (
-          localSignet &&
-          row.est_lu == null
-        ) {
-          signet.est_lu =
-            Boolean(localSignet.est_lu);
-        }
 
 
         const semanticScore =
@@ -826,13 +830,14 @@
 
 
         const semanticAccepted =
-          semanticScore >= semanticThreshold;
+          semanticScore >=
+          semanticThreshold;
 
 
         const keywordRescue =
           keywordComplete &&
           semanticScore >=
-            KEYWORD_RESCUE_SEMANTIC_THRESHOLD;
+          KEYWORD_RESCUE_SEMANTIC_THRESHOLD;
 
 
         const accepted =
@@ -865,7 +870,9 @@
             keywordRescue,
 
           relevance:
-            Math.round(finalScore * 100)
+            Math.round(
+              finalScore * 100
+            )
 
         });
 
@@ -888,14 +895,22 @@
        RECHERCHE CLASSIQUE
     ================================================== */
 
-    async function rechercheClassique(query) {
+    async function rechercheClassique(
+      query
+    ) {
 
-      const { data, error } =
+      const {
+        data,
+        error
+      } =
         await client.rpc(
           "recherche_classique",
           {
-            search_query: query,
-            match_count: 20
+            search_query:
+              query,
+
+            match_count:
+              20
           }
         );
 
@@ -912,9 +927,14 @@
        EMBEDDING DE RECHERCHE
     ================================================== */
 
-    async function generateSearchEmbedding(query) {
+    async function generateSearchEmbedding(
+      query
+    ) {
 
-      const { data, error } =
+      const {
+        data,
+        error
+      } =
         await client.functions.invoke(
           "generate-search-embedding",
           {
@@ -935,9 +955,11 @@
         !Array.isArray(embedding) ||
         embedding.length !== 768
       ) {
+
         throw new Error(
           "Embedding de recherche invalide."
         );
+
       }
 
       return embedding;
@@ -946,19 +968,27 @@
 
 
     /* ==================================================
-       RECHERCHE SÉMANTIQUE CLOUD
+       RECHERCHE SÉMANTIQUE
     ================================================== */
 
-    async function rechercheSemantique(query) {
+    async function rechercheSemantique(
+      query
+    ) {
 
       const queryEmbedding =
-        await generateSearchEmbedding(query);
+        await generateSearchEmbedding(
+          query
+        );
 
 
-      const { data, error } =
+      const {
+        data,
+        error
+      } =
         await client.rpc(
           "match_signets",
           {
+
             query_embedding:
               queryEmbedding,
 
@@ -967,6 +997,7 @@
 
             match_count:
               20
+
           }
         );
 
@@ -985,142 +1016,6 @@
 
 
     /* ==================================================
-       RECHERCHE PRINCIPALE
-    ================================================== */
-
-    async function rechercher() {
-
-      const query =
-        searchInput.value.trim();
-
-
-      if (!query) {
-
-        afficherSignets(
-          allSignets
-        );
-
-        status.textContent =
-          allSignets.length +
-          " signet" +
-          (
-            allSignets.length > 1
-              ? "s"
-              : ""
-          );
-
-        return;
-
-      }
-
-
-      searchButton.disabled = true;
-
-      status.textContent =
-        "🔎 Recherche en cours…";
-
-
-      try {
-
-        /*
-         * 1. RECHERCHE CLASSIQUE CLOUD
-         */
-
-        const classicResults =
-          await rechercheClassique(
-            query
-          );
-
-
-        if (
-          classicResults.length > 0
-        ) {
-
-          afficherSignets(
-            classicResults
-          );
-
-          status.textContent =
-            classicResults.length +
-            " résultat" +
-            (
-              classicResults.length > 1
-                ? "s"
-                : ""
-            );
-
-          return;
-
-        }
-
-
-        /*
-         * 2. RECHERCHE SÉMANTIQUE
-         */
-
-        status.textContent =
-          "🧠 Recherche sémantique en cours…";
-
-
-        const semanticResults =
-          await rechercheSemantique(
-            query
-          );
-
-
-        afficherSignets(
-          semanticResults,
-          semanticResults.length > 0
-        );
-
-
-        if (
-          semanticResults.length === 0
-        ) {
-
-          status.textContent =
-            "Aucun signet ne correspond à cette recherche.";
-
-        } else {
-
-          status.textContent =
-            semanticResults.length +
-            " résultat" +
-            (
-              semanticResults.length > 1
-                ? "s"
-                : ""
-            ) +
-            " classé" +
-            (
-              semanticResults.length > 1
-                ? "s"
-                : ""
-            ) +
-            " par pertinence.";
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "❌ Recherche :",
-          error
-        );
-
-        status.textContent =
-          "❌ Erreur pendant la recherche.";
-
-      } finally {
-
-        searchButton.disabled = false;
-
-      }
-
-    }
-
-
-    /* ==================================================
        FORMATAGE DU RÉSUMÉ
     ================================================== */
 
@@ -1131,46 +1026,146 @@
           .split(/\r?\n/);
 
       let html = "";
+
       let inList = false;
 
 
       function closeList() {
 
         if (inList) {
+
           html += "</ul>";
+
           inList = false;
+
         }
 
       }
 
 
-      for (const rawLine of lines) {
+      /*
+       * Reconnaît les différents formats de titres
+       * produits par les anciens et nouveaux résumés.
+       */
+
+      function extractSectionTitle(line) {
+
+        let title =
+          line.trim();
+
+
+        /*
+         * Ancien format :
+         *
+         * ##**_ TITRE _**##
+         */
+
+        if (
+          /^##\*\*_.*_\*\*##$/.test(title)
+        ) {
+
+          title =
+            title
+              .replace(/^##\*\*_/, "")
+              .replace(/_\*\*##$/, "")
+              .trim();
+
+          return title || null;
+
+        }
+
+
+        /*
+         * Formats Markdown :
+         *
+         * ## TITRE
+         * ### TITRE
+         * #### TITRE
+         */
+
+        const markdownHeading =
+          title.match(
+            /^#{2,6}\s+(.+?)\s*#*$/
+          );
+
+
+        if (markdownHeading) {
+
+          title =
+            markdownHeading[1]
+              .trim()
+              .replace(
+                /^\*\*(.+?)\*\*$/,
+                "$1"
+              )
+              .trim();
+
+          return title || null;
+
+        }
+
+
+        /*
+         * Format :
+         *
+         * **TITRE**
+         */
+
+        const boldHeading =
+          title.match(
+            /^\*\*(.+?)\*\*:?$/
+          );
+
+
+        if (boldHeading) {
+
+          title =
+            boldHeading[1].trim();
+
+          return title || null;
+
+        }
+
+
+        return null;
+
+      }
+
+
+      for (
+        const rawLine of lines
+      ) {
 
         const line =
           rawLine.trim();
 
 
         if (!line) {
-          continue;
-        }
-
-
-        const sectionMatch =
-          line.match(
-            /^##\*\*_?\s*(.*?)\s*_?\*\*##$/
-          );
-
-
-        if (sectionMatch) {
 
           closeList();
 
+          continue;
+
+        }
+
+
+        const sectionTitle =
+          extractSectionTitle(
+            line
+          );
+
+
+        if (sectionTitle) {
+
+          closeList();
+
+
           html +=
-            `<div class="summary-section-title">${
-              escapeHtml(
-                sectionMatch[1]
-              )
-            }</div>`;
+            '<div class="summary-section-title">' +
+            escapeHtml(
+              sectionTitle
+            ) +
+            '</div>';
 
           continue;
 
@@ -1194,10 +1189,13 @@
 
           }
 
+
           html +=
-            `<li>${escapeHtml(
+            '<li>' +
+            escapeHtml(
               bulletMatch[1]
-            )}</li>`;
+            ) +
+            '</li>';
 
           continue;
 
@@ -1206,15 +1204,17 @@
 
         closeList();
 
+
         html +=
-          `<p class="summary-paragraph">${
-            escapeHtml(line)
-          }</p>`;
+          '<p class="summary-paragraph">' +
+          escapeHtml(line) +
+          '</p>';
 
       }
 
 
       closeList();
+
 
       return html;
 
@@ -1230,8 +1230,12 @@
       showRelevance = false
     ) {
 
-      signetsContainer.innerHTML = "";
-      empty.classList.add("hidden");
+      signetsContainer.innerHTML =
+        "";
+
+      empty.classList.add(
+        "hidden"
+      );
 
 
       if (
@@ -1249,29 +1253,7 @@
 
 
       signets.forEach(
-        (signet) => {
-
-          /*
-           * Pour les résultats de recherche classique,
-           * est_lu peut ne pas être renvoyé par la RPC.
-           * On récupère alors l'état depuis allSignets.
-           */
-
-          const localSignet =
-            allSignets.find(
-              s =>
-                String(s.id) === String(signet.id)
-            );
-
-
-          if (
-            signet.est_lu == null &&
-            localSignet
-          ) {
-            signet.est_lu =
-              Boolean(localSignet.est_lu);
-          }
-
+        signet => {
 
           const article =
             document.createElement(
@@ -1279,17 +1261,14 @@
             );
 
 
+          const isRead =
+            signet.est_lu === true;
+
+
           article.className =
-            "signet";
-
-
-          if (Boolean(signet.est_lu)) {
-
-            article.classList.add(
-              "read"
-            );
-
-          }
+            isRead
+              ? "signet read"
+              : "signet";
 
 
           const date =
@@ -1338,6 +1317,7 @@
 
             </div>
 
+
             ${
               date
                 ? `
@@ -1347,6 +1327,7 @@
                 `
                 : ""
             }
+
 
             ${
               showRelevance &&
@@ -1360,11 +1341,13 @@
                 : ""
             }
 
+
             <div class="summary">
               ${formatSummary(
                 signet.resume_ia
               )}
             </div>
+
 
             <div class="signet-actions">
 
@@ -1373,9 +1356,9 @@
                 class="read-button"
               >
                 ${
-                  Boolean(signet.est_lu)
-                    ? "☑ Non lu"
-                    : "☐ Lu"
+                  isRead
+                    ? "Non lu"
+                    : "Lu"
                 }
               </button>
 
@@ -1396,104 +1379,6 @@
             );
 
 
-          /*
-           * Bouton Lu / Non lu
-           */
-
-          readButton.addEventListener(
-            "click",
-            async () => {
-
-              const newValue =
-                !Boolean(signet.est_lu);
-
-
-              readButton.disabled =
-                true;
-
-
-              const {
-                error
-              } =
-                await client
-                  .from("signets")
-                  .update({
-                    est_lu: newValue
-                  })
-                  .eq(
-                    "id",
-                    signet.id
-                  );
-
-
-              if (error) {
-
-                console.error(
-                  "Erreur mise à jour est_lu :",
-                  error
-                );
-
-                readButton.disabled =
-                  false;
-
-                return;
-
-              }
-
-
-              /*
-               * Mise à jour immédiate
-               * de l'objet affiché.
-               */
-
-              signet.est_lu =
-                newValue;
-
-
-              /*
-               * Mise à jour de la copie
-               * principale en mémoire.
-               */
-
-              const localSignet =
-                allSignets.find(
-                  s =>
-                    String(s.id) ===
-                    String(signet.id)
-                );
-
-
-              if (localSignet) {
-
-                localSignet.est_lu =
-                  newValue;
-
-              }
-
-
-              /*
-               * Mise à jour visuelle
-               */
-
-              article.classList.toggle(
-                "read",
-                newValue
-              );
-
-
-              readButton.textContent =
-                newValue
-                  ? "☑ Non lu"
-                  : "☐ Lu";
-
-
-              readButton.disabled =
-                false;
-
-            }
-          );
-
-
           titleButton.addEventListener(
             "click",
             () => {
@@ -1504,19 +1389,17 @@
                 );
 
 
-              /*
-               * Un seul signet ouvert
-               */
-
               document
                 .querySelectorAll(
                   ".signet.open"
                 )
                 .forEach(
                   opened => {
+
                     opened.classList.remove(
                       "open"
                     );
+
                   }
                 );
 
@@ -1526,6 +1409,84 @@
                 article.classList.add(
                   "open"
                 );
+
+              }
+
+            }
+          );
+
+
+          readButton.addEventListener(
+            "click",
+            async () => {
+
+              const newValue =
+                !(
+                  signet.est_lu === true
+                );
+
+
+              readButton.disabled =
+                true;
+
+
+              try {
+
+                const {
+                  data,
+                  error
+                } =
+                  await client
+                    .from("signets")
+                    .update({
+                      est_lu:
+                        newValue
+                    })
+                    .eq(
+                      "id",
+                      signet.id
+                    )
+                    .select(
+                      "id, est_lu"
+                    );
+
+
+                if (error) {
+                  throw error;
+                }
+
+
+                signet.est_lu =
+                  newValue;
+
+
+                article.classList.toggle(
+                  "read",
+                  newValue
+                );
+
+
+                readButton.textContent =
+                  newValue
+                    ? "Non lu"
+                    : "Lu";
+
+
+              } catch (error) {
+
+                console.error(
+                  "Erreur mise à jour est_lu :",
+                  error
+                );
+
+                alert(
+                  "Impossible de mettre à jour le statut de lecture."
+                );
+
+              } finally {
+
+                readButton.disabled =
+                  false;
 
               }
 
@@ -1753,8 +1714,144 @@
 
 
     /* ==================================================
-       RECHERCHE : CLIC + ENTRÉE UNIQUEMENT
+       RECHERCHE
     ================================================== */
+
+    async function rechercher() {
+
+      const query =
+        searchInput.value.trim();
+
+
+      if (!query) {
+
+        afficherSignets(
+          allSignets
+        );
+
+        status.textContent =
+          allSignets.length +
+          " signet" +
+          (
+            allSignets.length > 1
+              ? "s"
+              : ""
+          );
+
+        return;
+
+      }
+
+
+      searchButton.disabled =
+        true;
+
+      status.textContent =
+        "🔎 Recherche en cours…";
+
+
+      try {
+
+        /*
+         * 1. RECHERCHE CLASSIQUE CLOUD
+         */
+
+        const classicResults =
+          await rechercheClassique(
+            query
+          );
+
+
+        if (
+          classicResults.length > 0
+        ) {
+
+          afficherSignets(
+            classicResults
+          );
+
+
+          status.textContent =
+            classicResults.length +
+            " résultat" +
+            (
+              classicResults.length > 1
+                ? "s"
+                : ""
+            );
+
+          return;
+
+        }
+
+
+        /*
+         * 2. RECHERCHE SÉMANTIQUE
+         */
+
+        status.textContent =
+          "🧠 Recherche sémantique en cours…";
+
+
+        const semanticResults =
+          await rechercheSemantique(
+            query
+          );
+
+
+        afficherSignets(
+          semanticResults,
+          semanticResults.length > 0
+        );
+
+
+        if (
+          semanticResults.length === 0
+        ) {
+
+          status.textContent =
+            "Aucun signet ne correspond à cette recherche.";
+
+        } else {
+
+          status.textContent =
+            semanticResults.length +
+            " résultat" +
+            (
+              semanticResults.length > 1
+                ? "s"
+                : ""
+            ) +
+            " classé" +
+            (
+              semanticResults.length > 1
+                ? "s"
+                : ""
+            ) +
+            " par pertinence.";
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "❌ Recherche :",
+          error
+        );
+
+        status.textContent =
+          "❌ Erreur pendant la recherche.";
+
+      } finally {
+
+        searchButton.disabled =
+          false;
+
+      }
+
+    }
+
 
     searchButton.addEventListener(
       "click",
@@ -1784,7 +1881,8 @@
       "click",
       () => {
 
-        searchInput.value = "";
+        searchInput.value =
+          "";
 
         afficherSignets(
           allSignets
@@ -1858,4 +1956,5 @@
   </script>
 
 </body>
+
 </html>
