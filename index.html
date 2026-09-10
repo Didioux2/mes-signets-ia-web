@@ -18,7 +18,7 @@
       margin: 0;
       padding: 32px 20px;
       font-family: Arial, sans-serif;
-      background: #fff;
+      background: #f8f9fb;
       color: #222;
     }
 
@@ -175,21 +175,29 @@
     }
 
     /* --------------------------------------------------
-       SIGNETS — STYLE IDENTIQUE À L'EXTENSION
+       SIGNETS
     -------------------------------------------------- */
 
     .signet {
-      padding: 10px 0;
-      border-top: 1px solid #ddd;
+      margin-bottom: 10px;
+      padding: 12px 14px 13px;
+      border: 1px solid #e1e5ea;
+      border-radius: 10px;
+      background: #fff;
       transition:
         background 0.15s ease,
-        opacity 0.15s ease;
+        opacity 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .signet:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .signet-header {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
+      gap: 8px;
     }
 
     .title-button {
@@ -218,6 +226,7 @@
 
       font-family: Arial, sans-serif;
       font-size: 11px;
+      color: #1976d2;
 
       transition: transform 0.15s ease;
     }
@@ -245,23 +254,31 @@
       margin: 5px 0 0 22px;
       font-family: Arial, sans-serif;
       font-size: 12px;
-      color: #777;
+      color: #888;
     }
 
     .relevance {
       margin: 7px 0 0 22px;
       font-family: Arial, sans-serif;
       font-size: 12px;
-      color: #666;
+      color: #777;
     }
+
+    /* --------------------------------------------------
+       RÉSUMÉ
+    -------------------------------------------------- */
 
     .summary {
       display: none;
-      margin: 12px 0 4px 22px;
+      margin: 15px 0 5px 22px;
+      padding: 2px 0 2px 16px;
+
+      border-left: 3px solid #dbe7f4;
 
       font-family: Georgia, serif;
       font-size: 15px;
-      line-height: 1.65;
+      line-height: 1.7;
+      color: #333;
     }
 
     .signet.open .summary {
@@ -269,26 +286,36 @@
     }
 
     .summary-section-title {
-      margin: 18px 0 8px;
+      margin: 20px 0 10px;
+      padding: 6px 10px;
+
+      border-left: 4px solid #1976d2;
+      border-radius: 0 6px 6px 0;
+      background: #eef5fc;
 
       font-family: Georgia, serif;
-      font-size: 19px;
-      line-height: 1.3;
-      color: #1976d2;
+      font-size: 18px;
+      line-height: 1.35;
+      color: #1769aa;
       font-weight: bold;
     }
 
+    .summary-section-title:first-child {
+      margin-top: 2px;
+    }
+
     .summary-paragraph {
-      margin: 0 0 10px;
+      margin: 0 0 12px;
     }
 
     .summary-list {
-      margin: 0 0 12px 22px;
+      margin: 0 0 13px 20px;
       padding: 0;
     }
 
     .summary-list li {
       margin-bottom: 6px;
+      padding-left: 3px;
     }
 
     /* --------------------------------------------------
@@ -298,12 +325,13 @@
     .signet-actions {
       display: flex;
       gap: 8px;
-      margin: 8px 0 0 22px;
+      margin: 10px 0 0 22px;
     }
 
     .read-button {
       padding: 6px 10px;
       border: 1px solid #ccc;
+      border-radius: 7px;
       background: #fff;
       color: #222;
       font-size: 12px;
@@ -322,8 +350,8 @@
     .signet.read {
       background: #f1f5f2;
       opacity: 0.78;
-      padding-left: 8px;
-      padding-right: 8px;
+      padding-left: 14px;
+      padding-right: 14px;
     }
 
     .signet.read .title-button {
@@ -332,6 +360,13 @@
 
     .signet.read .summary {
       color: #68736c;
+      border-left-color: #cddbd1;
+    }
+
+    .signet.read .summary-section-title {
+      color: #557060;
+      background: #e8f0ea;
+      border-left-color: #71917d;
     }
 
     .signet.read .read-button {
@@ -403,11 +438,11 @@
 
       .summary {
         font-size: 14px;
-        line-height: 1.55;
+        line-height: 1.6;
       }
 
       .summary-section-title {
-        font-size: 18px;
+        font-size: 17px;
       }
 
       .read-button {
@@ -423,7 +458,7 @@
 
   <!-- ==================================================
        CONNEXION
-  =================================================== -->
+  ================================================== -->
 
   <section id="loginSection" class="hidden">
 
@@ -443,7 +478,7 @@
 
   <!-- ==================================================
        APPLICATION
-  =================================================== -->
+  ================================================== -->
 
   <div id="app" class="hidden">
 
@@ -452,6 +487,7 @@
 
   <div>
     <h1>🔖 Mes Signets IA</h1>
+
     <div class="subtitle">
       Votre bibliothèque personnelle
     </div>
@@ -464,7 +500,6 @@
 </header>
 
 <div id="userInfo"></div>
-
 
 <!-- RECHERCHE -->
 
@@ -486,7 +521,6 @@
   </button>
 
 </div>
-
 
 <div id="status">
   Chargement des signets...
@@ -1243,6 +1277,7 @@
             document.createElement(
               "article"
             );
+
 
           article.className =
             "signet";
