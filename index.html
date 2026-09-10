@@ -1023,22 +1023,27 @@
 
       const lines =
         String(text || "")
-          .split(/\r?\n/);
-
-      let html = "";
-
-      let inList = false;
+          .split(/\r?\n/)
+          .map(line => line.trim())
+          .filter(Boolean);
 
 
-      function closeList() {
+      if (!lines.length) {
+        return "";
+      }
 
-        if (inList) {
 
-          html += "</ul>";
+      /*
+       * Nettoyage global des marqueurs Markdown gras.
+       *
+       * On ne veut jamais afficher ** dans le résumé.
+       */
 
-          inList = false;
+      function cleanMarkdown(text) {
 
-        }
+        return String(text || "")
+          .replace(/\*\*/g, "")
+          .trim();
 
       }
 
@@ -1070,7 +1075,7 @@
               .replace(/_\*\*##$/, "")
               .trim();
 
-          return title || null;
+          return cleanMarkdown(title) || null;
 
         }
 
@@ -1093,14 +1098,9 @@
 
           title =
             markdownHeading[1]
-              .trim()
-              .replace(
-                /^\*\*(.+?)\*\*$/,
-                "$1"
-              )
               .trim();
 
-          return title || null;
+          return cleanMarkdown(title) || null;
 
         }
 
@@ -1120,14 +1120,54 @@
         if (boldHeading) {
 
           title =
-            boldHeading[1].trim();
+            boldHeading[1]
+              .trim();
 
-          return title || null;
+          return cleanMarkdown(title) || null;
 
         }
 
 
         return null;
+
+      }
+
+
+      /*
+       * Détermine si le résumé est constitué uniquement
+       * de puces (hors éventuels titres de sections).
+       *
+       * Dans ce cas, les puces seront volontairement
+       * affichées comme des paragraphes normaux.
+       */
+
+      const contentLines =
+        lines.filter(line =>
+          !extractSectionTitle(line)
+        );
+
+
+      const allContentIsBullets =
+        contentLines.length > 0 &&
+        contentLines.every(line =>
+          /^[-•*]\s+(.+)$/.test(line)
+        );
+
+
+      let html = "";
+
+      let inList = false;
+
+
+      function closeList() {
+
+        if (inList) {
+
+          html += "</ul>";
+
+          inList = false;
+
+        }
 
       }
 
@@ -1138,15 +1178,6 @@
 
         const line =
           rawLine.trim();
-
-
-        if (!line) {
-
-          closeList();
-
-          continue;
-
-        }
 
 
         const sectionTitle =
@@ -1172,13 +1203,49 @@
         }
 
 
+        /*
+         * Une ligne entièrement en gras ne doit pas
+         * conserver ses marqueurs ** visibles.
+         */
+
+        const cleanedLine =
+          cleanMarkdown(line);
+
+
         const bulletMatch =
-          line.match(
+          cleanedLine.match(
             /^[-•*]\s+(.+)$/
           );
 
 
         if (bulletMatch) {
+
+          /*
+           * Si TOUT le contenu est constitué de puces,
+           * on transforme chaque puce en paragraphe normal.
+           */
+
+          if (allContentIsBullets) {
+
+            closeList();
+
+
+            html +=
+              '<p class="summary-paragraph">' +
+              escapeHtml(
+                bulletMatch[1]
+              ) +
+              '</p>';
+
+            continue;
+
+          }
+
+
+          /*
+           * Sinon, on conserve les vraies listes
+           * lorsqu'elles sont mélangées au reste du résumé.
+           */
 
           if (!inList) {
 
@@ -1207,7 +1274,9 @@
 
         html +=
           '<p class="summary-paragraph">' +
-          escapeHtml(line) +
+          escapeHtml(
+            cleanedLine
+          ) +
           '</p>';
 
       }
