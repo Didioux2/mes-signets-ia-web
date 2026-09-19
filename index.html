@@ -10,6 +10,8 @@
 
   <title>Mes Signets IA</title>
 
+  <link rel="manifest" href="./manifest.webmanifest">
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -458,6 +460,42 @@
         font-size: 18px;
       }
     }
+
+    /* --------------------------------------------------
+       PWA — RÉSUMÉ D’UNE PAGE PARTAGÉE
+    -------------------------------------------------- */
+
+    #mobileSummaryBox {
+      margin: 18px 0;
+      padding: 16px;
+      background: #eef6f1;
+      border: 1px solid #c9ddd0;
+      border-radius: 12px;
+    }
+
+    #summarizeSharedButton {
+      width: 100%;
+      padding: 12px 14px;
+      border: 0;
+      border-radius: 9px;
+      background: #3f7d56;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #summarizeSharedButton:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
+
+    #sharedPageInfo {
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
   </style>
 </head>
 
@@ -507,6 +545,19 @@
     </header>
 
     <div id="userInfo"></div>
+
+
+    <!-- PARTAGE MOBILE -->
+
+    <div id="mobileSummaryBox" class="hidden">
+
+      <button id="summarizeSharedButton" type="button">
+        🧠 Résumer cette page
+      </button>
+
+      <div id="sharedPageInfo"></div>
+
+    </div>
 
 
     <!-- RECHERCHE -->
@@ -606,7 +657,133 @@
     const empty =
       document.getElementById("empty");
 
+    const mobileSummaryBox =
+      document.getElementById("mobileSummaryBox");
+
+    const summarizeSharedButton =
+      document.getElementById("summarizeSharedButton");
+
+    const sharedPageInfo =
+      document.getElementById("sharedPageInfo");
+
+    const sharedParams =
+      new URLSearchParams(window.location.search);
+
+    const sharedUrl =
+      sharedParams.get("shared_url") || "";
+
+    const sharedTitle =
+      sharedParams.get("shared_title") || "";
+
     let allSignets = [];
+
+
+    /* ==================================================
+       PARTAGE MOBILE / RÉSUMÉ IA
+    ================================================== */
+
+    function afficherPagePartagee() {
+
+      if (!sharedUrl) {
+        mobileSummaryBox.classList.add("hidden");
+        return;
+      }
+
+      mobileSummaryBox.classList.remove("hidden");
+
+      sharedPageInfo.textContent =
+        sharedTitle
+          ? "📄 " + sharedTitle + " — " + sharedUrl
+          : "📄 " + sharedUrl;
+
+    }
+
+
+    async function resumerPagePartagee() {
+
+      if (!sharedUrl) {
+        return;
+      }
+
+      summarizeSharedButton.disabled = true;
+      summarizeSharedButton.textContent =
+        "🧠 Résumé en cours…";
+      status.textContent =
+        "🧠 Gemini analyse la page…";
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await client.functions.invoke(
+            "summarize-url",
+            {
+              body: {
+                url: sharedUrl,
+                title: sharedTitle || null
+              }
+            }
+          );
+
+        if (error) {
+          throw error;
+        }
+
+        if (!data?.success || !data?.signet) {
+          throw new Error(
+            data?.error ||
+            "Le résumé n’a pas pu être créé."
+          );
+        }
+
+        status.textContent =
+          "✅ Page résumée et enregistrée.";
+
+        sharedPageInfo.textContent =
+          "✅ " +
+          (data.signet.title || sharedTitle || sharedUrl);
+
+        await chargerSignets();
+
+        history.replaceState(
+          {},
+          document.title,
+          window.location.pathname
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Erreur résumé mobile :",
+          error
+        );
+
+        status.textContent =
+          "❌ Impossible de résumer cette page.";
+
+        sharedPageInfo.textContent =
+          "❌ " +
+          (error?.message || "Erreur inconnue.");
+
+      } finally {
+
+        summarizeSharedButton.disabled = false;
+        summarizeSharedButton.textContent =
+          "🧠 Résumer cette page";
+
+      }
+
+    }
+
+
+    afficherPagePartagee();
+
+    summarizeSharedButton.addEventListener(
+      "click",
+      resumerPagePartagee
+    );
 
 
     /* ==================================================
@@ -2045,6 +2222,18 @@
 
     init();
 
+  </script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("./sw.js")
+          .catch(error =>
+            console.error("Service Worker :", error)
+          );
+      });
+    }
   </script>
 
 </body>
